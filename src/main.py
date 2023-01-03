@@ -28,9 +28,7 @@ def load_data():
 if __name__ == "__main__":
     student_units, tutors, units = load_data()
 
-    print(student_units)
-
     generation = 1
-    while generation <= 1:
+    while generation <= 250:
         print("--- Generation %d ---" % generation)
         generation = generation + 1
