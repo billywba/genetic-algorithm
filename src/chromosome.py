@@ -8,3 +8,12 @@ class Chromosome:
         self.schedule = []
         for i in range (0, self.AMOUNT_OF_DAYS * self.EXAMS_PER_DAY):
             self.schedule.append([random.choice(student_units), random.choice(tutors), random.choice(units)])
+
+    def print_schedule(self):
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
+        for i in range(0, len(days)):
+            print(days[i])
+
+            print(self.schedule[i * 2])
+            print(self.schedule[i * 2 + 1])
