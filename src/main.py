@@ -2,21 +2,21 @@ import csv
 
 def load_data():
     student_units = []
-    with open("data/student_units.csv") as csv_file:    
+    with open("src/data/student_units.csv") as csv_file:    
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader)
         for row in csv_reader:
            student_units.append(row)
 
     tutors = []
-    with open("data/tutor.csv") as csv_file:   
+    with open("src/data/tutor.csv") as csv_file:   
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader)
         for row in csv_reader:
            tutors.append(row[0])
     
     units = []
-    with open("data/units.csv") as csv_file:   
+    with open("src/data/units.csv") as csv_file:   
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader)
         for row in csv_reader:
