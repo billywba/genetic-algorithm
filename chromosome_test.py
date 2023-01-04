@@ -10,8 +10,7 @@ class ChromosomeTest(unittest.TestCase):
         chromosome = Chromosome([1, 2, 3], 
                                 ['Tutor1', 'Tutor2', 'Tutor3', 'Tutor4'], 
                                 ['CIS311', 'CIS312', 'CIS313'])
-                                
-        print(chromosome.schedule)
+
         self.assertEqual(len(chromosome.schedule), 10)
 
 if __name__ == '__main__':
