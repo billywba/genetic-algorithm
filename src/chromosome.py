@@ -10,6 +10,39 @@ class Chromosome:
         for i in range (0, self.AMOUNT_OF_DAYS * self.EXAMS_PER_DAY):
             self.schedule.append([random.choice(self.rooms), random.choice(units), random.choice(tutors), random.choice(units)])
 
+    def evaluate_fitness(self):
+        HARD_CONSTRAINT_SATISFACTION = 10
+        SOFT_CONSTRAINT_SATISFACTION = 5
+
+        fitness = 0
+
+        ### HARD CONSTRAINTS ###
+
+        # An exam will be scheduled for each unit. Unit name and code are presented in units.csv file.
+
+        # A student is enrolled at least one unit, but can be enrolled upto four units.
+
+        # A student cannot appear in more than one exam at a time.
+
+        # Exam won’t be held on the weekends i.e., on Saturday and Sunday.
+
+        # Each exam must be invigilated by a tutor. You can get tutor information using tutor.csv file. You should display tutor
+        # name in the output.
+
+        # A tutor invigilates one exam at a time.
+
+        # Each exam must be conducted between 10:00 am to 4:00 pm.
+
+
+        ### SOFT CONSTRAINTS ###
+
+        # Student should not sit in more than one exam consecutively in a day. In other word, if a student sits in exam on
+        # Monday in the morning slot, then don’t schedule another exam for the same student in the afternoon slot.
+
+        # Try to assign equal number of invigilation duties to each tutor.
+
+        return fitness
+
     def print_schedule(self):
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
