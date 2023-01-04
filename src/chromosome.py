@@ -14,7 +14,9 @@ class Chromosome:
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
         for i in range(0, len(days)):
-            print(days[i])
-
-            print(self.schedule[i * 2])
-            print(self.schedule[i * 2 + 1])
+            morning_unit = self.schedule[i * 2]
+            evening_unit = self.schedule[i * 2 + 1]
+            
+            print("| {:<61} |".format(days[i]))
+            print("| Room | Morning Units | Tutors | Room | Evening Units | Tutors |")
+            print("| {:<4} | {:<13} | {:<6} | {:<4} | {:<13} | {:<6} |\n".format(morning_unit[0], morning_unit[1], morning_unit[2], evening_unit[0], evening_unit[1], evening_unit[2]))
