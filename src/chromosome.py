@@ -1,9 +1,20 @@
 import random
 
+class Student:
+    def __init__(self, name, units):
+        self.name = name
+        self.units = [units]
+
+    def get_total_enrolled_units(self):
+        return len(self.units)
+
+
 class Chromosome:
     def __init__(self, student_units, tutors, units):
         self.AMOUNT_OF_DAYS = 5
         self.EXAMS_PER_DAY = 2
+
+        self.students = [Student(info[1], info[2]) for info in student_units]
 
         self.units = units
         self.rooms = ['P4' + str(i) for i in range(11, 21)]
@@ -34,8 +45,9 @@ class Chromosome:
         if not violation:
             fitness += HARD_CONSTRAINT_SATISFACTION
 
-
         # A student is enrolled at least one unit, but can be enrolled upto four units.
+        if all(1 <= student.get_total_enrolled_units() <= 4 for student in self.students):
+            fitness += HARD_CONSTRAINT_SATISFACTION
 
         # A student cannot appear in more than one exam at a time.
         fitness += HARD_CONSTRAINT_SATISFACTION
