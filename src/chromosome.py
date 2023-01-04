@@ -23,12 +23,15 @@ class Chromosome:
         # A student is enrolled at least one unit, but can be enrolled upto four units.
 
         # A student cannot appear in more than one exam at a time.
+        fitness += HARD_CONSTRAINT_SATISFACTION
 
         # Exam won’t be held on the weekends i.e., on Saturday and Sunday.
         fitness += HARD_CONSTRAINT_SATISFACTION
 
         # Each exam must be invigilated by a tutor. You can get tutor information using tutor.csv file. You should display tutor
         # name in the output.
+        if not any(exam[2] == "" for exam in self.schedule):
+            fitness += HARD_CONSTRAINT_SATISFACTION
 
         # A tutor invigilates one exam at a time.
 

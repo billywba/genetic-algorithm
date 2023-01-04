@@ -8,4 +8,11 @@ class ChromosomeFitnessTest(unittest.TestCase):
                                 ['Tutor1', 'Tutor2', 'Tutor3', 'Tutor4'], 
                                 ['CIS311', 'CIS312', 'CIS313'])
 
-        self.assertEqual(chromosome.evaluate_fitness(), 10)
+        self.assertEqual(chromosome.evaluate_fitness(), 30)
+
+    def test_fitness_invalid_tutor(self):
+        chromosome = Chromosome([1, 2, 3], 
+                                ['Tutor1', ''], 
+                                ['CIS311', 'CIS312', 'CIS313'])
+
+        self.assertEqual(chromosome.evaluate_fitness(), 20)
