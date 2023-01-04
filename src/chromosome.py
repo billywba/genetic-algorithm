@@ -25,6 +25,7 @@ class Chromosome:
         # A student cannot appear in more than one exam at a time.
 
         # Exam won’t be held on the weekends i.e., on Saturday and Sunday.
+        fitness += HARD_CONSTRAINT_SATISFACTION
 
         # Each exam must be invigilated by a tutor. You can get tutor information using tutor.csv file. You should display tutor
         # name in the output.
