@@ -4,6 +4,8 @@ class Chromosome:
     def __init__(self, student_units, tutors, units):
         self.AMOUNT_OF_DAYS = 5
         self.EXAMS_PER_DAY = 2
+
+        self.units = units
         self.rooms = ['P4' + str(i) for i in range(11, 21)]
 
         self.schedule = []
@@ -19,6 +21,19 @@ class Chromosome:
         ### HARD CONSTRAINTS ###
 
         # An exam will be scheduled for each unit. Unit name and code are presented in units.csv file.
+        violation = False
+        for unit in self.units:
+
+            scheduled_unit_exams = []
+            for exam in self.schedule:
+                scheduled_unit_exams.append(exam[1])
+
+            if unit not in scheduled_unit_exams:
+                violation = True
+
+        if not violation:
+            fitness += HARD_CONSTRAINT_SATISFACTION
+
 
         # A student is enrolled at least one unit, but can be enrolled upto four units.
 
@@ -34,9 +49,12 @@ class Chromosome:
             fitness += HARD_CONSTRAINT_SATISFACTION
 
         # A tutor invigilates one exam at a time.
+        if all(len(exam[2]) == 1 for exam in self.schedule):
+            fitness += HARD_CONSTRAINT_SATISFACTION
+
 
         # Each exam must be conducted between 10:00 am to 4:00 pm.
-
+        fitness += HARD_CONSTRAINT_SATISFACTION
 
         ### SOFT CONSTRAINTS ###
 
