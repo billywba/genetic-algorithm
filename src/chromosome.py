@@ -87,13 +87,11 @@ class Chromosome:
     # Student should not sit in more than one exam consecutively in a day. In other word, if a student sits in exam on
     # Monday in the morning slot, then don’t schedule another exam for the same student in the afternoon slot.
     def student_does_not_sit_more_than_one_exam_per_day_soft_constraint(self):
-        i = 0
         violation = False
-        while i < len(self.schedule) / 2:
+
+        for i in range(0, int(len(self.schedule) / 2), 2):
             if self.schedule[i][1] == self.schedule[i + 1][1]:
                 violation = True
-
-            i += 2
 
         return not violation
 
