@@ -8,3 +8,6 @@ class Population():
 
     def generate_population(self, population_size=50):
         self.population = [Chromosome(student_units=self.student_units, tutors=self.tutors, units=self.units) for i in range(0, population_size)]
+
+    def evaluate_population_fitness(self):
+        return [population.evaluate_fitness() for population in self.population]

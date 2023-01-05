@@ -28,6 +28,8 @@ class Chromosome:
             self.schedule.append([random.choice(self.rooms), random.choice(units), random.choice(tutors)])
 
     def evaluate_fitness(self):
+        self.fitness = 0
+
         hard_constraint_functions = [
                                         self.schedule_has_exam_for_each_unit_hard_constraint,
                                         self.student_enrolled_in_correct_units_hard_constraint,

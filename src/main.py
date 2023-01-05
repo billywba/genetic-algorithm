@@ -39,9 +39,10 @@ if __name__ == "__main__":
 
     population = Population(student_units, tutors, units)
     population.generate_population(POPULATION_SIZE)
-    population.population[0].print_schedule()
 
     generation = 1
     while generation <= MAXIMUM_GENERTIONS:
         print("--- Generation %d ---" % generation)
+        print("Highest fitness: " + str(max(population.evaluate_population_fitness())))
+
         generation = generation + 1
