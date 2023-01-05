@@ -75,6 +75,18 @@ class Chromosome:
 
         # Try to assign equal number of invigilation duties to each tutor.
 
+        # Count how many exams each tutor is invigilating
+        tutor_counts = { }
+        for exam in self.schedule:
+            tutor = exam[2]
+            if tutor not in tutor_counts:
+                tutor_counts[tutor] = 1
+            else:
+                tutor_counts[tutor] += 1
+
+        if max(tutor_counts.values()) - min(tutor_counts.values()) < 1:
+            fitness += HARD_CONSTRAINT_SATISFACTION
+
         return fitness
 
     def print_schedule(self):
