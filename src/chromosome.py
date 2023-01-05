@@ -28,7 +28,9 @@ class Chromosome:
             self.schedule.append([random.choice(self.rooms), random.choice(units), random.choice(tutors), random.choice(units)])
 
     def evaluate_fitness(self):
-        self.fitness = 100
+        self.schedule_has_exam_for_each_unit_hard_constraint()
+
+        return self.fitness
 
     ### HARD CONSTRAINTS ###
 
@@ -44,46 +46,41 @@ class Chromosome:
             if unit not in scheduled_unit_exams:
                 violation = True
 
-        if not violation:
-            self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return not violation
 
     # A student is enrolled at least one unit, but can be enrolled upto four units.
     def student_enrolled_in_correct_units_hard_constraint(self):
-        if all(1 <= student.get_total_enrolled_units() <= 4 for student in self.students):
-            self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return all(1 <= student.get_total_enrolled_units() <= 4 for student in self.students)
 
     # A student cannot appear in more than one exam at a time.
     def student_has_one_exam_at_a_time_hard_constaint(self):
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return True
 
     # Exam won’t be held on the weekends i.e., on Saturday and Sunday.
     def exam_not_on_weekend_hard_constraint(self):
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return True
 
     # Each exam must be invigilated by a tutor. You can get tutor information using tutor.csv file. You should display tutor
     # name in the output.
     def exam_has_tutor_invigilating_hard_constraint(self):
-        if not any(exam[2] == "" for exam in self.schedule):
-            self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return not any(exam[2] == "" for exam in self.schedule)
 
-        # A tutor invigilates one exam at a time.
+    # A tutor invigilates one exam at a time.
     def exam_has_one_tutor_invigilating_hard_constraint(self):
-        if all(len(exam[2]) == 1 for exam in self.schedule):
-            self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return all(not isinstance(exam[2], list) for exam in self.schedule)
 
-
-        # Each exam must be conducted between 10:00 am to 4:00 pm.
+    # Each exam must be conducted between 10:00 am to 4:00 pm.
     def exam_is_conducted_between_start_and_end_time(self):
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION
+        return True
 
     ### SOFT CONSTRAINTS ###
 
     # Student should not sit in more than one exam consecutively in a day. In other word, if a student sits in exam on
     # Monday in the morning slot, then don’t schedule another exam for the same student in the afternoon slot.
     def student_does_not_sit_more_than_one_exam_per_day_soft_constraint(self):
-        self.fitness += self.SOFT_CONSTRAINT_SATISFACTION
+        return True
 
-        # Try to assign equal number of invigilation duties to each tutor.
+    # Try to assign equal number of invigilation duties to each tutor.
     def schedule_has_equal_tutor_invigilation_soft_constraint(self):
         # Count how many exams each tutor is invigilating
         tutor_counts = { }
@@ -96,6 +93,7 @@ class Chromosome:
 
         if max(tutor_counts.values()) - min(tutor_counts.values()) < 1:
             self.fitness += self.SOFT_CONSTRAINT_SATISFACTION
+
 
     def print_schedule(self):
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
