@@ -1,5 +1,7 @@
 import csv
 
+from population import Population
+
 def load_data():
     student_units = []
     with open("src/data/student_units.csv") as csv_file:    
@@ -28,7 +30,11 @@ def load_data():
 if __name__ == "__main__":
     student_units, tutors, units = load_data()
 
+    population = Population(student_units, tutors, units)
+    population.generate_population(200)
+    population.population[0].print_schedule()
+
     generation = 1
-    while generation <= 250:
+    while generation <= 3:
         print("--- Generation %d ---" % generation)
         generation = generation + 1
