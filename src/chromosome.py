@@ -28,18 +28,29 @@ class Chromosome:
             self.schedule.append([random.choice(self.rooms), random.choice(units), random.choice(tutors), random.choice(units)])
 
     def evaluate_fitness(self):
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.schedule_has_exam_for_each_unit_hard_constraint() else 0
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.student_enrolled_in_correct_units_hard_constraint() else 0
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.student_has_one_exam_at_a_time_hard_constaint() else 0
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_not_on_weekend_hard_constraint() else 0
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_has_tutor_invigilating_hard_constraint() else 0
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_has_one_tutor_invigilating_hard_constraint() else 0
-        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_is_conducted_between_start_and_end_time() else 0
-        
-        self.fitness += self.SOFT_CONSTRAINT_SATISFACTION if self.student_does_not_sit_more_than_one_exam_per_day_soft_constraint() else 0
-        self.fitness += self.SOFT_CONSTRAINT_SATISFACTION if self.schedule_has_equal_tutor_invigilation_soft_constraint() else 0
+        hard_constraint_functions = [
+                                        self.schedule_has_exam_for_each_unit_hard_constraint,
+                                        self.student_enrolled_in_correct_units_hard_constraint,
+                                        self.student_has_one_exam_at_a_time_hard_constaint,
+                                        self.exam_not_on_weekend_hard_constraint,
+                                        self.exam_has_tutor_invigilating_hard_constraint,
+                                        self.exam_has_one_tutor_invigilating_hard_constraint,
+                                        self.exam_is_conducted_between_start_and_end_time
+                                    ]
+
+        soft_constraint_functions = [
+                                        self.student_does_not_sit_more_than_one_exam_per_day_soft_constraint,
+                                        self.schedule_has_equal_tutor_invigilation_soft_constraint
+                                    ]
+
+        for hard_constraint in hard_constraint_functions:
+            self.fitness += self.HARD_CONSTRAINT_SATISFACTION if hard_constraint() else 0
+
+        for soft_constraint in soft_constraint_functions:
+            self.fitness += self.SOFT_CONSTRAINT_SATISFACTION if soft_constraint() else 0
 
         return self.fitness
+
 
     ### HARD CONSTRAINTS ###
 
@@ -106,8 +117,7 @@ class Chromosome:
             else:
                 tutor_counts[tutor] += 1
 
-        if max(tutor_counts.values()) - min(tutor_counts.values()) < 1:
-            self.fitness += self.SOFT_CONSTRAINT_SATISFACTION
+        return max(tutor_counts.values()) - min(tutor_counts.values()) < 1
 
 
     def print_schedule(self):
