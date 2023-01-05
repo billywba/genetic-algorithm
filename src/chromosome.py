@@ -72,6 +72,7 @@ class Chromosome:
 
         # Student should not sit in more than one exam consecutively in a day. In other word, if a student sits in exam on
         # Monday in the morning slot, then don’t schedule another exam for the same student in the afternoon slot.
+        fitness += HARD_CONSTRAINT_SATISFACTION
 
         # Try to assign equal number of invigilation duties to each tutor.
 
