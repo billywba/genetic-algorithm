@@ -28,13 +28,20 @@ def load_data():
 
     
 if __name__ == "__main__":
+    # Control Parameters
+    POPULATION_SIZE         = 100 # Population size: generate population randomly within range of 50 - 250
+    CROSSOVER_PROBABILITY   = 0.4 # Select crossover probability within range [0 – 1]
+    MUTATION_PROBABILITY    = 0.2 # Select mutation probability within range [0 – 1] (always use lesser value as compared to the crossover probability)
+    MAXIMUM_GENERTIONS      = 250 # Use maximum number of generations within range of [50 – 500]
+    THRESHOLD_FITNESS       = (10 * 7) + (5 * 2) # Constant values from chromosome.py - 7 hard constraints and 2 soft constraints
+
     student_units, tutors, units = load_data()
 
     population = Population(student_units, tutors, units)
-    population.generate_population(200)
+    population.generate_population(POPULATION_SIZE)
     population.population[0].print_schedule()
 
     generation = 1
-    while generation <= 3:
+    while generation <= MAXIMUM_GENERTIONS:
         print("--- Generation %d ---" % generation)
         generation = generation + 1
