@@ -3,12 +3,12 @@ import unittest
 from src.chromosome import Chromosome
 
 class ChromosomeFitnessTest(unittest.TestCase):
-    # def test_fitness(self):
-    #     chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
-    #                             ['Tutor1', 'Tutor2', 'Tutor3', 'Tutor4'], 
-    #                             ['CIS311', 'CIS312', 'CIS313'])
+    def test_fitness(self):
+        chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
+                                ['Tutor1', 'Tutor2', 'Tutor3', 'Tutor4'], 
+                                ['CIS311', 'CIS312', 'CIS313'])
 
-    #     self.assertEqual(chromosome.evaluate_fitness(), 0)
+        self.assertGreater(chromosome.evaluate_fitness(), 35)
 
     def test_schedule_has_exam_for_each_unit_hard_constraint_true(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
@@ -60,6 +60,30 @@ class ChromosomeFitnessTest(unittest.TestCase):
         chromosome.schedule[0][2] = ['Tutor1', 'Tutor2']
 
         self.assertFalse(chromosome.exam_has_one_tutor_invigilating_hard_constraint())
+
+    def test_student_does_not_sit_more_than_one_exam_per_day_soft_constraint_true(self):
+        chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
+                                ['Tutor1', 'Tutor2'], 
+                                ['CIS311', 'CIS312', 'CIS313'])
+
+        chromosome.schedule = [
+                                ['P415', 'CIS311', 'Tutor1'],
+                                ['P416', 'CIS312', 'Tutor2']
+                            ]
+
+        self.assertTrue(chromosome.student_does_not_sit_more_than_one_exam_per_day_soft_constraint())
+
+    def test_student_does_not_sit_more_than_one_exam_per_day_soft_constraint_false(self):
+        chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
+                                ['Tutor1', 'Tutor2'], 
+                                ['CIS311', 'CIS312', 'CIS313'])
+
+        chromosome.schedule = [
+                                ['P417', 'CIS311', 'Tutor5'],
+                                ['P418', 'CIS311', 'Tutor3']
+                            ]
+
+        self.assertFalse(chromosome.student_does_not_sit_more_than_one_exam_per_day_soft_constraint())
 
     # def test_student_too_many_units(self):
     #     chromosome = Chromosome([['1', 'test_student', 'CIS312']], ['Tutor1'], ['CIS311'])

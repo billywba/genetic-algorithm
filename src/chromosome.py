@@ -28,7 +28,16 @@ class Chromosome:
             self.schedule.append([random.choice(self.rooms), random.choice(units), random.choice(tutors), random.choice(units)])
 
     def evaluate_fitness(self):
-        self.schedule_has_exam_for_each_unit_hard_constraint()
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.schedule_has_exam_for_each_unit_hard_constraint() else 0
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.student_enrolled_in_correct_units_hard_constraint() else 0
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.student_has_one_exam_at_a_time_hard_constaint() else 0
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_not_on_weekend_hard_constraint() else 0
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_has_tutor_invigilating_hard_constraint() else 0
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_has_one_tutor_invigilating_hard_constraint() else 0
+        self.fitness += self.HARD_CONSTRAINT_SATISFACTION if self.exam_is_conducted_between_start_and_end_time() else 0
+        
+        self.fitness += self.SOFT_CONSTRAINT_SATISFACTION if self.student_does_not_sit_more_than_one_exam_per_day_soft_constraint() else 0
+        self.fitness += self.SOFT_CONSTRAINT_SATISFACTION if self.schedule_has_equal_tutor_invigilation_soft_constraint() else 0
 
         return self.fitness
 
@@ -78,7 +87,15 @@ class Chromosome:
     # Student should not sit in more than one exam consecutively in a day. In other word, if a student sits in exam on
     # Monday in the morning slot, then don’t schedule another exam for the same student in the afternoon slot.
     def student_does_not_sit_more_than_one_exam_per_day_soft_constraint(self):
-        return True
+        i = 0
+        violation = False
+        while i < len(self.schedule) / 2:
+            if self.schedule[i][1] == self.schedule[i + 1][1]:
+                violation = True
+
+            i += 2
+
+        return not violation
 
     # Try to assign equal number of invigilation duties to each tutor.
     def schedule_has_equal_tutor_invigilation_soft_constraint(self):
