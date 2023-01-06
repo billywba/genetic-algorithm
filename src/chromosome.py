@@ -21,11 +21,12 @@ class Chromosome:
         self.students = [Student(info[1], info[2]) for info in student_units]
 
         self.units = units
+        self.tutors = tutors
         self.rooms = ['P4' + str(i) for i in range(11, 21)]
 
         self.schedule = []
         for i in range (0, self.AMOUNT_OF_DAYS * self.EXAMS_PER_DAY):
-            self.schedule.append([random.choice(self.rooms), random.choice(units), random.choice(tutors)])
+            self.schedule.append([random.choice(self.rooms), random.choice(self.units), random.choice(self.tutors)])
 
     def evaluate_fitness(self):
         self.fitness = 0
@@ -120,6 +121,18 @@ class Chromosome:
                 tutor_counts[tutor] += 1
 
         return max(tutor_counts.values()) - min(tutor_counts.values()) < 1
+
+    def mutate(self, mutation_probability):
+        if random.uniform(0, 1) < mutation_probability:
+            # Get a random exam to be changed
+            mutated_exam_index = random.randint(0, len(self.schedule) - 1)
+
+            if random.randint(0, 1) == 0:
+                # Change unit
+                self.schedule[mutated_exam_index][1] = random.choice(self.units)
+            else:
+                # Change tutor
+                self.schedule[mutated_exam_index][2] = random.choice(self.tutors)
 
 
     def print_schedule(self):
