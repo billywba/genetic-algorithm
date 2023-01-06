@@ -1,3 +1,5 @@
+import random
+
 from chromosome import Chromosome
 
 class Population():
@@ -11,3 +13,14 @@ class Population():
 
     def evaluate_population_fitness(self):
         return [population.evaluate_fitness() for population in self.population]
+
+    def generate_next_generation(self, crossover_probability=0.3, mutation_probability=0.1):
+        # Select best parents
+        new_population = self.population[:10]
+
+        # Crossover 
+
+        # Mutate
+
+        # Apply new generation
+        self.population = new_population
