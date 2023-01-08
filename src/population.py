@@ -21,6 +21,8 @@ class Population():
         # Crossover 
 
         # Mutate
+        for individual in self.population:
+            individual.mutate(mutation_probability)
 
         # Apply new generation
         self.population = new_population
