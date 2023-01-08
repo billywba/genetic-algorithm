@@ -28,4 +28,4 @@ class ChromosomeTest(unittest.TestCase):
         chromosome.mutate(1)
 
         # Assert new schedule has changed evening unit (from CIS312 to CIS311)
-        self.assertEqual(chromosome.schedule, [['P417', 'CIS311', 'Tutor5'], ['P418', 'CIS311', 'Tutor3']])
+        self.assertEqual(chromosome.schedule, [['P417', 'CIS311', 'Tutor5'], ['P412', 'CIS312', 'Tutor3']])

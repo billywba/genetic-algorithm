@@ -126,8 +126,12 @@ class Chromosome:
         if random.uniform(0, 1) < mutation_probability:
             # Get a random exam to be changed
             mutated_exam_index = random.randint(0, len(self.schedule) - 1)
+            mutate_choice = random.randint(0, 2)
 
-            if random.randint(0, 1) == 0:
+            if mutate_choice == 0:
+                # Change room
+                self.schedule[mutated_exam_index][0] = random.choice(self.rooms)
+            elif mutate_choice == 1:
                 # Change unit
                 self.schedule[mutated_exam_index][1] = random.choice(self.units)
             else:
