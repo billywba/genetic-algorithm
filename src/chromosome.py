@@ -40,7 +40,7 @@ class Chromosome:
                                         self.student_has_one_exam_at_a_time_hard_constaint,
                                         self.exam_not_on_weekend_hard_constraint,
                                         self.exam_has_tutor_invigilating_hard_constraint,
-                                        self.exam_has_one_tutor_invigilating_hard_constraint,
+                                        self.tutor_invigilates_one_exam_at_a_time_hard_constraint,
                                         self.exam_is_conducted_between_start_and_end_time
                                     ]
 
@@ -96,8 +96,23 @@ class Chromosome:
         return violations
 
     # A tutor invigilates one exam at a time.
-    def exam_has_one_tutor_invigilating_hard_constraint(self):
-        return all(not isinstance(exam[2], list) for exam in self.schedule)
+    def tutor_invigilates_one_exam_at_a_time_hard_constraint(self):
+        violations = 0
+
+        # Get current exams at each time period
+        for exam_time in self.exam_times:
+
+            # Get list of current exams and the tutors
+            current_exams = [exam for exam in self.schedule if exam[3] == exam_time]
+            current_tutors = [exam[2] for exam in current_exams]
+            
+            # Check if tutor is invigilating more than one exam at the current time period
+            for tutor in current_tutors:
+                if current_tutors.count(tutor) > 1:
+                    violations += 1
+                    continue
+
+        return violations
 
     # Each exam must be conducted between 10:00 am to 4:00 pm.
     def exam_is_conducted_between_start_and_end_time(self):
