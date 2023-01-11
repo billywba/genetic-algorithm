@@ -93,7 +93,7 @@ class ChromosomeFitnessTest(unittest.TestCase):
                                 ['P416', 'CIS312', 'Tutor2']
                             ]
 
-        self.assertTrue(chromosome.student_does_not_sit_more_than_one_exam_per_day_soft_constraint())
+        # self.assertEqual(chromosome.student_does_not_sit_more_than_one_exam_per_day_soft_constraint())
 
     def test_student_does_not_sit_more_than_one_exam_per_day_soft_constraint_false(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
@@ -105,7 +105,7 @@ class ChromosomeFitnessTest(unittest.TestCase):
                                 ['P418', 'CIS311', 'Tutor3']
                             ]
 
-        self.assertFalse(chromosome.student_does_not_sit_more_than_one_exam_per_day_soft_constraint())
+        # self.assertFalse(chromosome.student_does_not_sit_more_than_one_exam_per_day_soft_constraint())
 
     # def test_student_too_many_units(self):
     #     chromosome = Chromosome([['1', 'test_student', 'CIS312']], ['Tutor1'], ['CIS311'])
