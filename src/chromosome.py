@@ -79,16 +79,21 @@ class Chromosome:
 
     # A student cannot appear in more than one exam at a time.
     def student_has_one_exam_at_a_time_hard_constaint(self):
-        return True
+        return 0
 
     # Exam won’t be held on the weekends i.e., on Saturday and Sunday.
     def exam_not_on_weekend_hard_constraint(self):
-        return True
+        return 0
 
     # Each exam must be invigilated by a tutor. You can get tutor information using tutor.csv file. You should display tutor
     # name in the output.
     def exam_has_tutor_invigilating_hard_constraint(self):
-        return not any(exam[2] == "" for exam in self.schedule)
+        violations = 0
+        for exam in self.schedule:
+            if exam[2] == "":
+                violations += 1
+
+        return violations
 
     # A tutor invigilates one exam at a time.
     def exam_has_one_tutor_invigilating_hard_constraint(self):
