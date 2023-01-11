@@ -62,17 +62,16 @@ class Chromosome:
 
     # An exam will be scheduled for each unit. Unit name and code are presented in units.csv file.
     def schedule_has_exam_for_each_unit_hard_constraint(self):
-        violation = False
+        # Get units which have an exam scheduled
+        scheduled_unit_exams = [exam[1] for exam in self.schedule]
+        
+        # If unit not present in generated exam schedule, increase violations
+        violations = 0
         for unit in self.units:
-
-            scheduled_unit_exams = []
-            for exam in self.schedule:
-                scheduled_unit_exams.append(exam[1])
-
             if unit not in scheduled_unit_exams:
-                violation = True
+                violations += 1
 
-        return not violation
+        return violations
 
     # A student is enrolled at least one unit, but can be enrolled upto four units.
     def student_enrolled_in_correct_units_hard_constraint(self):

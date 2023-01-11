@@ -15,17 +15,30 @@ class ChromosomeFitnessTest(unittest.TestCase):
                                 ['Tutor1', 'Tutor2', 'Tutor3', 'Tutor4'], 
                                 ['CIS311', 'CIS312', 'CIS313'])
 
-        self.assertTrue(chromosome.schedule_has_exam_for_each_unit_hard_constraint())
+        chromosome.schedule = [
+                                ['P417', 'CIS311', 'Tutor5', 'Monday_PM'],
+                                ['P418', 'CIS312', 'Tutor3', 'Monday_AM'],
+                                ['P418', 'CIS313', 'Tutor3', 'Friday_PM']
+                            ]
+
+        # self.assertTrue(chromosome.schedule_has_exam_for_each_unit_hard_constraint())
+        self.assertEqual(0, chromosome.schedule_has_exam_for_each_unit_hard_constraint())
 
     def test_schedule_has_exam_for_each_unit_hard_constraint_false(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
                                 ['Tutor1', 'Tutor2', 'Tutor3', 'Tutor4'], 
                                 ['CIS311', 'CIS312', 'CIS313'])
 
-        # Add new unit after the exam timetable schedule has been created
-        chromosome.units.append('CIS316')
+        chromosome.schedule = [
+                                ['P417', 'CIS311', 'Tutor5', 'Monday_PM'],
+                                ['P418', 'CIS312', 'Tutor3', 'Monday_AM'],
+                                ['P418', 'CIS313', 'Tutor3', 'Friday_PM']
+                            ]
 
-        self.assertFalse(chromosome.schedule_has_exam_for_each_unit_hard_constraint())
+        # Add new units after the exam timetable schedule has been created
+        chromosome.units.extend(['CIS316', 'CIS319'])
+
+        self.assertEqual(2, chromosome.schedule_has_exam_for_each_unit_hard_constraint())
 
     def test_exam_has_tutor_invigilating_hard_constraint_true(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
