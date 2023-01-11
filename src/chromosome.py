@@ -23,10 +23,13 @@ class Chromosome:
         self.units = units
         self.tutors = tutors
         self.rooms = ['P4' + str(i) for i in range(11, 21)]
+        self.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        self.exam_times = [day + '_' + time_period for day in self.days for time_period in ['AM', 'PM']]
 
         self.schedule = []
-        for i in range (0, self.AMOUNT_OF_DAYS * self.EXAMS_PER_DAY):
-            self.schedule.append([random.choice(self.rooms), random.choice(self.units), random.choice(self.tutors)])
+        for i in range (0, len(self.units)):
+            self.schedule.append([random.choice(self.rooms), random.choice(self.units), 
+                                    random.choice(self.tutors), random.choice(self.exam_times)])
 
     def evaluate_fitness(self):
         self.fitness = 0
