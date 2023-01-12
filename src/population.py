@@ -1,5 +1,7 @@
 import random
 
+from copy import copy
+
 from chromosome import Chromosome
 
 class Population():
@@ -14,15 +16,41 @@ class Population():
     def evaluate_population_fitness(self):
         return [population.evaluate_fitness() for population in self.population]
 
-    def generate_next_generation(self, crossover_probability=0.3, mutation_probability=0.1):
-        # Select best parents
-        new_population = self.population[:10]
+    def crossover(self, parent_one, parent_two, cut_index):
+        offspring = copy(parent_one)
+        
+        # Copy the schedules
+        parent_one_schedule = parent_one.schedule.copy() 
+        parent_two_schedule = parent_two.schedule.copy()
 
-        # Crossover 
+        # Take schedule from first parent up until chosen index
+        first_part = parent_one_schedule[0:cut_index]
+        second_part = parent_two_schedule[cut_index:len(parent_two_schedule)]
+
+        # Combine to make new schedule
+        new_schedule = first_part + second_part
+
+        # Take remaining schedule from parent two
+        offspring.schedule = new_schedule
+
+        return offspring
+
+    def generate_next_generation(self, crossover_probability=0.3, mutation_probability=0.1):
+        print("Generating new population")
+        # Select best parents
+        new_population = self.population[:2]
+
+        # Crossover
+        for individual in self.population:
+            if random.uniform(0, 1) < crossover_probability:
+                new_population.append(self.crossover(individual, random.choice(new_population), 3))
 
         # Mutate
         for individual in self.population:
             individual.mutate(mutation_probability)
+
+        # for individual in self.population:
+        #     individual.print_schedule()
 
         # Apply new generation
         self.population = new_population
