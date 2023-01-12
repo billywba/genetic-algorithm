@@ -16,16 +16,17 @@ class Population():
     def evaluate_population_fitness(self):
         return [population.evaluate_fitness() for population in self.population]
 
-    def crossover(self, parent_one, parent_two, cut_index):
+    def crossover(self, parent_one, parent_two):
         offspring = copy(parent_one)
+        cut_index = random.randint(0, len(parent_one.schedule) - 1)
         
         # Copy the schedules
         parent_one_schedule = parent_one.schedule.copy() 
         parent_two_schedule = parent_two.schedule.copy()
 
         # Take schedule from first parent up until chosen index
-        first_part = parent_one_schedule[0:cut_index]
-        second_part = parent_two_schedule[cut_index:len(parent_two_schedule)]
+        first_part = parent_one_schedule[:cut_index]
+        second_part = parent_two_schedule[cut_index:]
 
         # Combine to make new schedule
         new_schedule = first_part + second_part
@@ -42,7 +43,7 @@ class Population():
         # Crossover
         for individual in self.population:
             if random.uniform(0, 1) < crossover_probability:
-                new_offspring = self.crossover(individual, random.choice(new_population), 3)
+                new_offspring = self.crossover(individual, random.choice(new_population))
                 new_population.append(new_offspring)
 
         # Mutate
