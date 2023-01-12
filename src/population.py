@@ -52,11 +52,8 @@ class Population():
         # Apply new generation
         self.population = new_population
 
-    def __get_chromosome_fitness(self, chromosome):
-        return chromosome.evaluate_fitness()
-
     def find_two_fittest_schedules(self, population):
         ordered_population = deepcopy(population)
-        ordered_population.sort(key=self.__get_chromosome_fitness, reverse=True)
+        ordered_population.sort(key=lambda x: x.fitness, reverse=True)
 
-        return ordered_population[0:2]
+        return ordered_population[:2]
