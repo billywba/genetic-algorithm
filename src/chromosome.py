@@ -11,9 +11,6 @@ class Student:
 
 class Chromosome:
     def __init__(self, student_units, tutors, units):
-        self.AMOUNT_OF_DAYS = 5
-        self.EXAMS_PER_DAY = 2
-
         self.fitness = 0
 
         self.students = [Student(info[1], info[2]) for info in student_units]
@@ -154,9 +151,12 @@ class Chromosome:
             elif mutate_choice == 1:
                 # Change unit
                 self.schedule[mutated_exam_index][1] = random.choice(self.units)
-            else:
+            elif mutate_choice == 2:
                 # Change tutor
                 self.schedule[mutated_exam_index][2] = random.choice(self.tutors)
+            elif mutate_choice == 3:
+                # Change exam time
+                self.schedule[mutated_exam_index][3] = random.choice(self.exam_times)
 
     def print_schedule(self):
         for exam_time in self.exam_times:
