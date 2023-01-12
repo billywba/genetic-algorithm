@@ -45,6 +45,8 @@ if __name__ == "__main__":
     max_fitnesses = []
     population_sizes = []
 
+    optimum_chromosome = None
+
     generation = 1
     while generation <= MAXIMUM_GENERTIONS:
         print("--- Generation %d ---" % generation)
@@ -58,10 +60,20 @@ if __name__ == "__main__":
         averages.append(average)
         print("Average fitness: " + str(average))
 
+        # If the new generation has a better solution, save it
+        generation_best_chromosome = population.find_fittest_n_chromosomes(population.population, 1)[0]
+        if optimum_chromosome is None:
+            optimum_chromosome = generation_best_chromosome
+        elif generation_best_chromosome.fitness > optimum_chromosome.fitness:
+            optimum_chromosome = generation_best_chromosome
+
         population.generate_next_generation(crossover_probability=CROSSOVER_PROBABILITY, 
                                             mutation_probability=MUTATION_PROBABILITY)
 
         generation += 1
+
+    # Print best schedule
+    optimum_chromosome.print_schedule()
 
     plt.plot(averages, label='Average')
     plt.plot(max_fitnesses, label='Max Fitness')
