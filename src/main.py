@@ -33,16 +33,27 @@ if __name__ == "__main__":
     CROSSOVER_PROBABILITY   = 0.4 # Select crossover probability within range [0 – 1]
     MUTATION_PROBABILITY    = 0.2 # Select mutation probability within range [0 – 1] (always use lesser value as compared to the crossover probability)
     MAXIMUM_GENERTIONS      = 250 # Use maximum number of generations within range of [50 – 500]
-    THRESHOLD_FITNESS       = (10 * 7) + (5 * 2) # Constant values from chromosome.py - 7 hard constraints and 2 soft constraints
 
     student_units, tutors, units = load_data()
 
     population = Population(student_units, tutors, units)
     population.generate_population(POPULATION_SIZE)
 
+    averages = []
+
     generation = 1
     while generation <= MAXIMUM_GENERTIONS:
         print("--- Generation %d ---" % generation)
+        print("Total population size: " + str(len(population.population)))
         print("Highest fitness: " + str(max(population.evaluate_population_fitness())))
+        
+        average = sum(population.evaluate_population_fitness()) / len(population.population)
+        averages.append(average)
+        print("Average fitness: " + str(average))
+
+        population.generate_next_generation(crossover_probability=CROSSOVER_PROBABILITY, 
+                                            mutation_probability=MUTATION_PROBABILITY)
 
         generation = generation + 1
+
+    
