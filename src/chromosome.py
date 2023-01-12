@@ -21,6 +21,21 @@ class Chromosome:
         self.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
         self.exam_times = [day + '_' + time_period for day in self.days for time_period in ['AM', 'PM']]
 
+        self.hard_constraint_functions = [
+                                            self.schedule_has_exam_for_each_unit_hard_constraint,
+                                            self.student_enrolled_in_correct_units_hard_constraint,
+                                            self.student_has_one_exam_at_a_time_hard_constaint,
+                                            self.exam_not_on_weekend_hard_constraint,
+                                            self.exam_has_tutor_invigilating_hard_constraint,
+                                            self.tutor_invigilates_one_exam_at_a_time_hard_constraint,
+                                            self.exam_is_conducted_between_start_and_end_time
+                                        ]
+
+        self.soft_constraint_functions = [
+                                            self.student_does_not_sit_more_than_one_exam_per_day_soft_constraint,
+                                            self.schedule_has_equal_tutor_invigilation_soft_constraint
+                                        ]
+
         self.schedule = []
         for i in range (0, len(self.units)):
             self.schedule.append([random.choice(self.rooms), random.choice(self.units), 
@@ -29,25 +44,10 @@ class Chromosome:
     def evaluate_fitness(self):
         self.fitness = 0
 
-        hard_constraint_functions = [
-                                        self.schedule_has_exam_for_each_unit_hard_constraint,
-                                        self.student_enrolled_in_correct_units_hard_constraint,
-                                        self.student_has_one_exam_at_a_time_hard_constaint,
-                                        self.exam_not_on_weekend_hard_constraint,
-                                        self.exam_has_tutor_invigilating_hard_constraint,
-                                        self.tutor_invigilates_one_exam_at_a_time_hard_constraint,
-                                        self.exam_is_conducted_between_start_and_end_time
-                                    ]
-
-        soft_constraint_functions = [
-                                        self.student_does_not_sit_more_than_one_exam_per_day_soft_constraint,
-                                        self.schedule_has_equal_tutor_invigilation_soft_constraint
-                                    ]
-
-        for hard_constraint in hard_constraint_functions:
+        for hard_constraint in self.hard_constraint_functions:
             self.fitness += (1 - (1 / hard_constraint()))
 
-        for soft_constraint in soft_constraint_functions:
+        for soft_constraint in self.soft_constraint_functions:
             self.fitness += (1 - (1 / soft_constraint()))
 
         return self.fitness
