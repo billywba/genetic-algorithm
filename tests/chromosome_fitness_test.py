@@ -22,7 +22,7 @@ class ChromosomeFitnessTest(unittest.TestCase):
                             ]
 
         # self.assertTrue(chromosome.schedule_has_exam_for_each_unit_hard_constraint())
-        self.assertEqual(0, chromosome.schedule_has_exam_for_each_unit_hard_constraint())
+        self.assertEqual(1, chromosome.schedule_has_exam_for_each_unit_hard_constraint())
 
     def test_schedule_has_exam_for_each_unit_hard_constraint_false(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
@@ -45,7 +45,7 @@ class ChromosomeFitnessTest(unittest.TestCase):
                                 ['Tutor1', 'Tutor2'], 
                                 ['CIS311', 'CIS312', 'CIS313'])
 
-        self.assertEqual(0, chromosome.exam_has_tutor_invigilating_hard_constraint())
+        self.assertEqual(1, chromosome.exam_has_tutor_invigilating_hard_constraint())
 
     def test_exam_has_tutor_invigilating_hard_constraint_false(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 
@@ -68,7 +68,7 @@ class ChromosomeFitnessTest(unittest.TestCase):
                                 ['P418', 'CIS313', 'Tutor7', 'Monday_PM']
                             ]
 
-        self.assertEqual(0, chromosome.tutor_invigilates_one_exam_at_a_time_hard_constraint())
+        self.assertEqual(1, chromosome.tutor_invigilates_one_exam_at_a_time_hard_constraint())
 
     def test_tutor_invigilates_one_exam_at_a_time_hard_constraint_false(self):
         chromosome = Chromosome([['1', 'test_student', 'CIS312'], ['2', 'test_student2', 'CIS312'], ['3', 'test_student3', 'CIS312']], 

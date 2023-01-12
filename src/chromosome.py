@@ -69,7 +69,7 @@ class Chromosome:
             if unit not in scheduled_unit_exams:
                 violations += 1
 
-        return violations + 1
+        return 1 if violations == 0 else violations
 
     # A student is enrolled at least one unit, but can be enrolled upto four units.
     def student_enrolled_in_correct_units_hard_constraint(self):
@@ -91,7 +91,7 @@ class Chromosome:
             if exam[2] == "":
                 violations += 1
 
-        return violations + 1
+        return 1 if violations == 0 else violations
 
     # A tutor invigilates one exam at a time.
     def tutor_invigilates_one_exam_at_a_time_hard_constraint(self):
@@ -110,7 +110,7 @@ class Chromosome:
                     violations += 1
                     continue
 
-        return violations + 1
+        return 1 if violations == 0 else violations
 
     # Each exam must be conducted between 10:00 am to 4:00 pm.
     def exam_is_conducted_between_start_and_end_time(self):
@@ -161,10 +161,10 @@ class Chromosome:
     def print_schedule(self):
         for exam_time in self.exam_times:
             print(exam_time)
-            print("| Room | Unit   | Tutors  |")
+            print("| Room | Unit   | Tutor   |")
 
             for exam in self.schedule:
                 if exam[3] == exam_time:
-                    print("| {:<4} | {:<6} | {:<6} |".format(exam[0], exam[1], exam[2]))
+                    print("| {:<4} | {:<6} | {:<7} |".format(exam[0], exam[1], exam[2]))
 
             print("\n")
