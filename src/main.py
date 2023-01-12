@@ -1,5 +1,7 @@
 import csv
 
+import matplotlib.pyplot as plt
+
 from population import Population
 
 def load_data():
@@ -30,9 +32,9 @@ def load_data():
 if __name__ == "__main__":
     # Control Parameters
     POPULATION_SIZE         = 100 # Population size: generate population randomly within range of 50 - 250
-    CROSSOVER_PROBABILITY   = 0.4 # Select crossover probability within range [0 – 1]
-    MUTATION_PROBABILITY    = 0.2 # Select mutation probability within range [0 – 1] (always use lesser value as compared to the crossover probability)
-    MAXIMUM_GENERTIONS      = 250 # Use maximum number of generations within range of [50 – 500]
+    CROSSOVER_PROBABILITY   = 0.1 # Select crossover probability within range [0 – 1]
+    MUTATION_PROBABILITY    = 0.05 # Select mutation probability within range [0 – 1] (always use lesser value as compared to the crossover probability)
+    MAXIMUM_GENERTIONS      = 50 # Use maximum number of generations within range of [50 – 500]
 
     student_units, tutors, units = load_data()
 
@@ -40,12 +42,17 @@ if __name__ == "__main__":
     population.generate_population(POPULATION_SIZE)
 
     averages = []
+    max_fitnesses = []
+    population_sizes = []
 
     generation = 1
     while generation <= MAXIMUM_GENERTIONS:
         print("--- Generation %d ---" % generation)
         print("Total population size: " + str(len(population.population)))
-        print("Highest fitness: " + str(max(population.evaluate_population_fitness())))
+
+        max_fitness = max(population.evaluate_population_fitness())
+        max_fitnesses.append(max_fitness)
+        print("Highest fitness: " + str(max_fitness))
         
         average = sum(population.evaluate_population_fitness()) / len(population.population)
         averages.append(average)
@@ -54,6 +61,15 @@ if __name__ == "__main__":
         population.generate_next_generation(crossover_probability=CROSSOVER_PROBABILITY, 
                                             mutation_probability=MUTATION_PROBABILITY)
 
-        generation = generation + 1
+        generation += 1
+
+    plt.plot(averages, label='Average')
+    plt.plot(max_fitnesses, label='Max Fitness')
+
+    plt.legend()
+    plt.xlabel('Generation')
+    plt.ylabel('Fitness')
+
+    plt.show()
 
     
