@@ -1,6 +1,6 @@
 import random
 
-from copy import copy
+from copy import copy, deepcopy
 
 from chromosome import Chromosome
 
@@ -36,21 +36,27 @@ class Population():
         return offspring
 
     def generate_next_generation(self, crossover_probability=0.3, mutation_probability=0.1):
-        print("Generating new population")
         # Select best parents
-        new_population = self.population[:2]
+        new_population = self.find_two_fittest_schedules(self.population)
 
         # Crossover
         for individual in self.population:
             if random.uniform(0, 1) < crossover_probability:
-                new_population.append(self.crossover(individual, random.choice(new_population), 3))
+                new_offspring = self.crossover(individual, random.choice(new_population), 3)
+                new_population.append(new_offspring)
 
         # Mutate
-        for individual in self.population:
+        for individual in new_population:
             individual.mutate(mutation_probability)
-
-        # for individual in self.population:
-        #     individual.print_schedule()
 
         # Apply new generation
         self.population = new_population
+
+    def __get_chromosome_fitness(self, chromosome):
+        return chromosome.evaluate_fitness()
+
+    def find_two_fittest_schedules(self, population):
+        ordered_population = deepcopy(population)
+        ordered_population.sort(key=self.__get_chromosome_fitness, reverse=True)
+
+        return ordered_population[0:2]
